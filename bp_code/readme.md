@@ -46,32 +46,36 @@ print("Обработка завершена")
 
 ### Тест:
 
-```python
+```
 import subprocess
 from pathlib import Path
 
-code = Path("main.py").read_text(encoding="utf-8")
 
-assert '.get("order_id", "без номера")' in code or ".get('order_id', 'без номера')" in code, \
-    "Используйте get() и подставьте значение 'без номера'."
+def test_solution():
+    code = Path("main.py").read_text(encoding="utf-8")
 
-result = subprocess.run(
-    ["python", "main.py"],
-    capture_output=True,
-    text=True,
-    encoding="utf-8"
-)
+    assert (
+        '.get("order_id", "без номера")' in code
+        or ".get('order_id', 'без номера')" in code
+    ), "Используйте get() и подставьте значение 'без номера'."
 
-assert result.returncode == 0, "Программа не должна завершаться с ошибкой."
+    result = subprocess.run(
+        ["python", "main.py"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8"
+    )
 
-output = result.stdout.strip().splitlines()
+    assert result.returncode == 0, "Программа не должна завершаться с ошибкой."
 
-expected = [
-    "Заказ A-1001 отправлен в обработку",
-    "Заказ без номера отправлен в обработку",
-    "Заказ A-1003 отправлен в обработку",
-    "Обработка завершена"
-]
+    output = result.stdout.strip().splitlines()
 
-assert output == expected, "Проверьте вывод программы."
+    expected = [
+        "Заказ A-1001 отправлен в обработку",
+        "Заказ без номера отправлен в обработку",
+        "Заказ A-1003 отправлен в обработку",
+        "Обработка завершена"
+    ]
+
+    assert output == expected, "Проверьте вывод программы."
 ```
